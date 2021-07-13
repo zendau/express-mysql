@@ -2,6 +2,13 @@
 Дання связь необходима когда каждая таблица из двух может ссылкаться на другую больше одного раза.
 Для этой связи создается таблица посредник. В данной таблице происходит соединение с помощью  foreign key которые ссылаются на primary key или unique другой таблицы.
 
+**Пример** Select
+
+```sql
+SELECT e.employeeName, e.employeeIdAge, p.positionName FROM employeeidpositions ep INNER JOIN employee e ON ep.employeeIdId = e.employeeId INNER JOIN position p ON ep.positionId = p.postionId;
+```
+
+**Создание таблиц**
 ```sql
 
 DROP TABLE IF EXISTS `employee`;
@@ -40,6 +47,13 @@ CREATE TABLE IF NOT EXISTS `position` (
 # Один ко многим
 Первая таблица имеет одно значение, но у каждого значения может быть множество значений с другой таблицы. Для такого типа связы не надо создавать таблицу посредник.
 
+**Пример** Select
+
+```sql
+SELECT ps.firstName, ps.lastName, ps.age, p.phoneNumber FROM phone p INNER JOIN person ps ON p.personId = ps.id;
+```
+
+**Создание таблиц**
 ```sql
 
 DROP TABLE IF EXISTS `person`;
@@ -69,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `phone` (
 
 Схожа на связь один к многим но с тем отличием что каждое значение будет уникальным. По сути данная связь это разделение одной таблицы на несколько частей.
 
+**Создание таблиц**
 ```sql
 
 DROP TABLE IF EXISTS `employee`;
