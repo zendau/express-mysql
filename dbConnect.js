@@ -3,6 +3,7 @@ const mysql = require('mysql2')
 class Db {
     constructor() {
     
+        // Конфиг для запуска pool
         this.mysqlConfig = {
             host: 'localhost',
             user: 'root',
@@ -13,8 +14,10 @@ class Db {
             queueLimit: 0
         }
 
+        // Первое подключение
         this.connectToDb()
-            
+        
+        // Переподключение, когда со временем соединение будет прервано
         this.pool.on('error', err => {
             if(err.code === 'PROTOCOL_CONNECTION_LOST') {
                 this.connectToDb()                        
@@ -26,14 +29,12 @@ class Db {
 
     }
 
+    // Запрос к Бд с Promise
     query(query, data) {
-
         return new Promise((res, rej) => {
-
             try {
 
                 this.pool.execute(query, data, (err, data) => {
-
 
                     if (err) {
                         rej(err.sqlMessage)
@@ -46,11 +47,11 @@ class Db {
                 rej(e.message)
             }
         })
-        
     }
 
+    // Создание подключения pool
     connectToDb() {
-        this.pool = mysql.createConnection(this.mysqlConfig)
+        this.pool = mysql.createPool(this.mysqlConfig)
     }
 
 }

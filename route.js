@@ -40,7 +40,6 @@ router.post("/addPeople", (req, res) => {
             res.status(500).send("Server error")
     })
 
-    //INSERT INTO `learnsql`.`person` (`firstName`, `lastName`, `age`) VALUES ('Jon', 'Mel', '37');
 })
 
 
