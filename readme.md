@@ -25,6 +25,23 @@ CREATE TABLE IF NOT EXISTS `employeeidpositions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+DROP TABLE IF EXISTS `position`;
+CREATE TABLE IF NOT EXISTS `position` (
+  `postionId` int(11) NOT NULL AUTO_INCREMENT,
+  `positionName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  PRIMARY KEY (`postionId`),
+  UNIQUE KEY `postionId` (`postionId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+```
+
+![Many to Many](img/manyToMany.png)
+
+# Один ко многим
+Первая таблица имеет одно значение, но у каждого значения может быть множество значений с другой таблицы. Для такого типа связы не надо создавать таблицу посредник.
+
+```sql
+
 DROP TABLE IF EXISTS `person`;
 CREATE TABLE IF NOT EXISTS `person` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -34,6 +51,45 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS `phone`;
+CREATE TABLE IF NOT EXISTS `phone` (
+  `phoneId` int(11) NOT NULL AUTO_INCREMENT,
+  `personId` int(11) NOT NULL DEFAULT '0',
+  `phoneNumber` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  PRIMARY KEY (`phoneId`),
+  KEY `FK_phone_person` (`personId`),
+  CONSTRAINT `FK_phone_person` FOREIGN KEY (`personId`) REFERENCES `person` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 ```
 
-![Many to Many](img/manyToMany.png)
+![One to Many](img/oneToMany.png)
+
+# Один к одному
+
+Схожа на связь один к многим но с тем отличием что каждое значение будет уникальным. По сути данная связь это разделение одной таблицы на несколько частей.
+
+```sql
+
+DROP TABLE IF EXISTS `employee`;
+
+CREATE TABLE IF NOT EXISTS `employee` (
+  `employeeId` int(11) NOT NULL AUTO_INCREMENT,
+  `employeeName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `employeeIdAge` int(11) DEFAULT '0',
+  PRIMARY KEY (`employeeId`),
+  UNIQUE KEY `employeeId` (`employeeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `disableemployee`;
+CREATE TABLE IF NOT EXISTS `disableemployee` (
+  `disablePerson` int(11) NOT NULL,
+  `Employee` int(11) DEFAULT NULL,
+  PRIMARY KEY (`disablePerson`),
+  UNIQUE KEY `Employee` (`Employee`),
+  CONSTRAINT `FK__employee` FOREIGN KEY (`Employee`) REFERENCES `employee` (`employeeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+```
+
+![One to one](img/oneToOne.png)
